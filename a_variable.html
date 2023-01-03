@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .note{
+            width: 50%;
+            min-height: 100px;
+            background-color: lightgreen;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>변수와 타입</h1>    
+    <h2>변수 선언</h2>
+    <pre>
+        자바스크립트는 타입추론을 지원하는 언어.
+
+        변수선언 : var 변수명,   변수, es6 이전
+                  let 변수명,   변수, es6 이후 
+                  const 변수명, 상수, es6 이후
+    </pre>
+
+    <pre>
+        우리가 var를 사용하지 않는 이유.
+
+        1. 변수호이스팅이 발생한다.
+
+         자바스크립트의 인터프리터가 코드를 해석할 때
+         변수 또는 함수를 선언하는 코드를 먼저 해석한 다음 나머지 코드를 해석하기 시작한다.
+         따라서 변수나 함수를 코드라인상 아래에 선언하더라도, 인터프리터는 먼저 변수나, 함수의 선언코드를 수행하기 때문에 에러가 발생하지 않는다.
+
+    </pre>
+
+    <script type="text/javascript">
+
+        // 선언한 적 없는 var변수 hello를 초기화
+        hello = 'hello world';
+        console.dir(hello);
+
+        //letHello = 'hello let';
+        //constHello = 'const hello';
+
+        // hello 선언
+        var hello;
+        let letHello;
+        const constHello = 'hello const';
+        
+        // const는 상수이기 때문에 초기화 이후 수정할 수 없다.
+        //constHello = 'hi const';
+
+        // 함수 실행
+        alertHello();
+
+        // 함수 선언
+        function alertHello(){
+            console.dir('function hello');
+        }
+    </script>
+
+    <h2>var, let, const의 변수 스코프</h2>
+    <pre>
+        함수레벨스코프 && 블록레벨스코프
+        scope : 메모리에 변수가 올라가고 내려오는 기준, 또는 범위
+
+        var         : 함수레벨스코프
+        let, const  : 블록레벨스코프
+    </pre>
+    <script>
+
+        function testVariableScope(){
+
+            if(true){
+                var varTest = 'if문 안에 선언한 var';
+                //let letTest= 'if문 안에 선언한 let'
+                const constTest= 'if문 안에 선언한 const'
+            }
+
+            console.dir(varTest);
+            //console.dir(letTest);
+            //console.dir(constTest);
+        }
+
+        testVariableScope();
+
+    </script>
+
+    <h2>window 전역객체</h2>
+    <pre>
+        window(전역객체) : 자바스크립트에서 사용하는 변수, 함수, 객체를 속성을 관리하고 자바스크립트 프로그래밍에 필요한 객체나 함수를 제공해주는 전역객체.
+                           * 전역객체 : 브라우저가 종료될 때 까지 메모리에서 내려오지 않는 객체
+
+        전역에서 var로 선언한 변수는 전역객체인 window에 속성으로 등록이 된다.
+        let, const로 선언한 변수는 전역객체에 등록되지 않는다.
+    </pre>
+
+    <script>
+        var mc = '전역에서 선언한 var변수';
+        let letMc = '전역에서 선언한 let변수';
+        const constMc = '전역에서 선언한 const 변수';
+        console.dir(window);
+    </script>
+</body>
+</html>

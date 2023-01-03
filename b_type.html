@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>type</h1>
+    <pre>
+        primitive type : String(문자열), Number(숫자), Boolean, Null, Undefined
+                데이터를 복사할 때 깊은 복사가 되는 타입
+
+        reference type : Object
+                데이터를 복사할 때 얕은 복사가 되는 타입
+    </pre>
+
+    <!-- typeNote 요소를 클릭하는 사용자 이벤트 발생 시 testType 함수를 호출 -->
+    <div class="note" id="typeNote" onclick="testType()">
+    
+    </div>
+
+    <script>
+        function testType(){
+            let name = '하명도';
+            let age = 13;
+            let isLeave = true;
+            let empty = null;
+            let notInit;
+            let obj = {
+                name:'hmd',
+                age:13,
+                toString:function(){
+                    return '13살 인 hmd 입니다.';
+                }
+            }
+
+            function add(n1, n2){
+                return n1 + n2;
+            }
+
+            let hobby = ['축구','배구','농구'];
+
+            // html element 객체를 자바스크립트로 반환
+            // dom 트리에 접근할 수 있는 객체 : document
+
+            let typeNote = document.querySelector('#typeNote');
+            console.dir(typeNote);
+            console.dir(add);
+            console.dir(obj);
+
+            typeNote.innerHTML = '';
+            typeNote.innerHTML += '<b>name : </b>' + typeof(name) + '<br>';
+            typeNote.innerHTML += '<b>age : </b>' + typeof(age) + '<br>';
+            typeNote.innerHTML += '<b>isLeave : </b>' + typeof(isLeave) + '<br>';
+            typeNote.innerHTML += '<b>empty : </b>' + typeof(empty) + '<br>';
+            typeNote.innerHTML += '<b>notInit : </b>' + typeof(notInit) + '<br>';
+            typeNote.innerHTML += '<b>obj : </b>' + typeof(obj) + '<br>';
+            typeNote.innerHTML += '<b>add : </b>' + typeof(add) + '<br>';
+            typeNote.innerHTML += '<b>hobby : </b>' + typeof(hobby) + '<br>';
+        }
+    </script>
+
+    <h1> 타입 관련 함수 </h1>
+    <h2>String</h2>
+    <pre>
+        자바스크립트의 String literal은 '', "" 로 사용할 수 있다.
+        String은 자바스크립트의 내장객체로 문자열들을 다루기 위한 메서드를 제공해준다.
+    </pre>
+    <div id="stringNote" class="note"></div>
+    <script>
+        let stringNote = document.querySelector('#stringNote');
+
+        let test = 'Multicampus JAVA Class';
+
+        // 문자를 대문자로 변환하여 console.dir()을 사용해 출력 해주세요.
+        console.dir(test.toUpperCase());
+
+        // 문자를 소문자로 변환하여 console.dir()을 사용해 출력 해주세요.
+        console.dir(test.toLowerCase());
+
+        let fruits = '사과,바나나,복숭아,키위,파인애플';
+        //fruits를 , 를 기준으로 잘라 console.dir()을 사용해 출력 해주세요.
+        console.dir(fruits.split(','));
+
+        //test를 0번 인덱스부터 3번인덱스까지 잘라 console.dir()을 사용해 출력 해주세요.
+        console.dir(test.substring(0,4));
+
+        //test의 JAVA를 JavaScript로 변환해 console.dir()을 사용해 출력 해주세요.
+        console.dir(test.replace('JAVA','JavaScript'));
+
+    </script>
+
+    <h1>문자열 Template Literals</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
