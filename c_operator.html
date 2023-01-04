@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>연산자</h1>
+    <pre>
+        산술 : + - * / &
+        단항 : ++ --
+        비교 : < > <= >= == != === !==
+        논리 : && ||
+        삼항 : 조건식?값1:값2
+        문자열결합연산자 : +
+    </pre>
+
+    <h2>동등연산자와 일치연산자</h2>
+    <pre>
+        == : type을 추론하여 casting 한다음 casting된 값으로 비교연산을 수행
+        === : type과 값이 정확하게 일치해야만 true
+    </pre>
+
+    <div id="equalNote" class="note"></div>
+
+    <p>원하는 숫자를 입력하세요.</p>
+    <input type="text" id="inpNum" placeholder="10을 입력하세요.">
+    <button onclick="checkNum()">확인</button>
+
+    <script>
+        let equalNote = document.querySelector('#equalNote');
+
+        let num = 0;
+        let str ='0';
+        let arr = [];
+        let obj = {
+            toString:function(){return '0'}
+        }
+
+        equalNote.innerHTML += `let num = 0; <br>
+        let str ='0'; <br>
+        let arr = []; <br>
+        let obj = { <br>
+            toString:function(){return '0'} <br>
+        } <br><br>`;
+
+        equalNote.innerHTML += `1. 문자열을 숫자로 캐스팅해서 값을 비교 <br>`;
+        equalNote.innerHTML += `1. num == str : ${num == str} <br><hr>`;
+
+        equalNote.innerHTML += `2. 빈 배열은 비교연산시에 '' 로 변환, 공백문자열은 숫자 0과 비교연산시 true <br>`;
+        equalNote.innerHTML += `2. num == '' : ${num == ''} <br>`;
+        equalNote.innerHTML += `2. [] : ${[]} <br>`;
+        equalNote.innerHTML += `2. num == arr : ${num == arr} <br><hr>`;
+
+        equalNote.innerHTML += `3. '0'와 공백문자열은 다른 문자열이다. <br>`;
+        equalNote.innerHTML += `3.str == arr : ${str == arr} <br><hr>`;
+
+        equalNote.innerHTML += `4. Object를 문자열 결합연산에서 사용할 경우, toString값으로 비교. toString의 반환값이 '0' <br>`;
+        equalNote.innerHTML += `4.num == obj : ${num == obj} <br><hr>`;
+
+        equalNote.innerHTML += `5. str = '0',  obj.toString = '0' <br>`;
+        equalNote.innerHTML += `5.str == obj : ${str == obj} <br><hr>`;
+
+        equalNote.innerHTML += `6. '0'와 공백문자열은 다른 문자열이다. <br>`;
+        equalNote.innerHTML += `6. arr == obj : ${arr == obj} <br><hr>`;
+
+
+        equalNote.innerHTML += '<h3>일치연산자를 사용</h3>'
+        equalNote.innerHTML += `1. num === str : ${num === str} <br><hr>`;
+        equalNote.innerHTML += `2. num === arr : ${num === arr} <br><hr>`;
+        equalNote.innerHTML += `3.str === arr : ${str === arr} <br><hr>`;
+        equalNote.innerHTML += `4.num === obj : ${num === obj} <br><hr>`;
+        equalNote.innerHTML += `5.str === obj : ${str === obj} <br><hr>`;
+        equalNote.innerHTML += `6. arr === obj : ${arr === obj} <br><hr>`;
+
+        function checkNum(){
+            // 요소 객체를 가지고 옴
+            let inpNum = document.querySelector('#inpNum'); 
+
+            // input요소에 사용자가 입력한 값을 value속성으로 받아온다.
+            let input = inpNum.value;
+            //let input = inpNum.valueAsNumber;  value 값을 number로 파싱해서 반환
+
+            if(input === 10){
+                alert('10입니다.');
+            }else{
+                alert(typeof(input) + ', 10이 아닙니다.')
+            }
+
+        }
+
+    </script>
+
+
+    
+</body>
+</html>

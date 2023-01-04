@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <h1>자바스크립트의 statement</h1>
+    <ol>
+        <li>if</li>
+        <li>switch</li>
+        <li>while</li>
+        <li>for</li>
+        <li>forEach</li>
+    </ol>
+
+    <h1>자바스크립트의 Statement 테스트</h1>
+
+	<label>if: <input type="number" id='if' placeholder='1또는 2를 입력하세요'></label>
+	<button onclick='testIf()'>확인하기</button>
+	<div id='ifNote'></div>
+	
+	<label>switch: <input type="number" id='switch' placeholder='1또는 2를 입력하세요'></label>
+	<button onclick='testSwitch()'>확인하기</button>
+	<div id='switchNote'></div>
+	
+	<label>while: <input type="number" id='while' placeholder='숫자를 입력하세요.'></label>
+	<button onclick='testWhile()'>확인하기</button>
+	<div id='whileNote'></div>
+	
+	<label>for: <input type="number" id='for' placeholder='숫자를 입력하세요.'></label>
+	<button onclick='testFor()'>확인하기</button>
+	<div id='forNote'></div>
+	
+	<label>forEach: <input type="text" id='forEach' placeholder='좋아하는 문장을 입력하세요.'></label>
+	<button onclick='testForEach()'>확인하기</button>
+	<div id='forEachNote'></div>
+
+    <script>
+        function testIf(){
+            
+            let input = document.querySelector('#if').valueAsNumber;
+            let ifNote = document.querySelector('#ifNote');
+
+            console.dir(input);
+            console.dir(typeof(input));
+
+            if(input === 1){
+                ifNote.innerHTML += '1 입니다. <br>';
+            }else if(input === 2){
+                ifNote.innerHTML += '2 입니다. <br>';
+            }else{
+                ifNote.innerHTML += '부적절한 값입니다. <br>';
+            }
+        }
+
+        function testSwitch(){
+            let input = document.querySelector('#switch').valueAsNumber;
+            switch(input){
+                case 1 : switchNote.innerHTML += '1 입니다. <br>'; break;
+                case 2 : switchNote.innerHTML += '2 입니다. <br>'; break;
+                default : switchNote.innerHTML += '부적절한 값입니다. <br>'; 
+            }
+        }
+
+        function testWhile(){
+            let cnt = document.querySelector('#while').valueAsNumber;
+            while(cnt > 0){
+                whileNote.innerHTML += `${cnt--} <br>`;
+            }
+        }
+
+        function testFor(){
+            let cnt = document.querySelector('#for').valueAsNumber;
+            for(let i = 0; i < cnt; i++){
+                forNote.innerHTML += `${i} <br>`;
+            }
+        }
+
+        function testForEach(){
+            let arr = document.querySelector('#forEach').value.split(' ');
+            let forEachNote = document.querySelector('#forEachNote');
+            
+            // 자바스크립트의 함수는 1급객체이다. 
+            // 1급객체 : 값으로 다루어질 수 있는 객체
+            //              변수에 담기거나, 매개변수에 담겨 전달되거나, return값으로 사용될 수 있다.
+            // Array.forEach(callback fnc(e,i,curArr))
+
+            arr.forEach(function(e,i,curArr){
+                forEachNote.innerHTML += `${i}번째 단어 : ${e}, curArr: ${curArr}<br>`;
+            })
+
+        }
+
+
+
+
+    </script>
+
+</body>
+</html>

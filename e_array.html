@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>배열</h1>
+    <pre>
+        자바스크립트에서 모든 타입의 데이터를 저장하는 자료구조.
+        index를 사용해 저장된 배열의 요소에 접근이 가능하다.
+        자바의 Object List와 유사하다.
+    </pre>
+    <div id="arrayNote" class="note"></div>
+    <script>
+        // 요소객체를 불러올 때 html요소의 id 속성값으로 바로 호출이 가능하다.
+        let arr = ['하명도',19, true, [1,2,3,4], {score:10}, function(){console.dir('hi')}];
+        console.dir(arr);
+        arr.forEach(function(e,i){
+            arrayNote.innerHTML += `${e} <br>`;
+        })
+    </script>
+
+    <h1>배열의 메서드</h1>
+    <script>
+        let fruitsArr = ['사과', '딸기','바나나','수박','복숭아'];
+
+        // 1. '딸기' 요소의 인덱스를 찾아 console.dir로 출력하시오.
+        console.dir(fruitsArr.indexOf('딸기'));
+
+        // 2. fruitsArr의 맨 뒤에 자몽을 추가하세요.
+        console.dir(fruitsArr.push('자몽'));
+        console.dir(fruitsArr);
+
+        // 3. fruitsArr의 맨 뒤의 요소를 삭제하세요.
+        console.dir(fruitsArr.pop());
+        console.dir(fruitsArr);
+
+        // 4. fruitsArr의 맨 앞에 포도를 추가하세요.
+        console.dir(fruitsArr.unshift('포도'));
+        console.dir(fruitsArr);
+
+        // 5. fruitsArr의 맨 앞의 요소를 제거하세요.
+        console.dir(fruitsArr.shift());
+        console.dir(fruitsArr);
+
+        let fruitsArr2 = ['메론', '체리'];
+        //6. fruitsArr와 fruitsArr2를 결합하여 하나의 배열로 만드세요.
+        console.dir(fruitsArr.concat(fruitsArr2));
+
+        //7. fruitsArr을 오름차순으로 정렬하세요.
+        console.dir(fruitsArr.sort())
+
+        //8. fruistsArr를 글자 수 기준으로 오름차순 정렬
+		//   만약 글자수가 같다면, 가나다 순으로 내림차순 정렬
+        function compare(a, b){
+            if(a.length != b.length) return a.length - b.length;
+            return b.localeCompare(a);
+        }
+
+        fruitsArr.sort(compare);
+        console.dir(fruitsArr)
+
+        //9. splice
+        // 2번인덱스 담긴 요소를 삭제해보자.
+        console.dir(fruitsArr.splice(2,1));
+        console.dir(fruitsArr)
+
+        // 1번인덱스에 산딸기, 블루베리를 추가해보자.
+        console.dir(fruitsArr.splice(1,0,'산딸기','블루베리'));
+        console.dir(fruitsArr);
+
+        // 3번인덱스에 담긴 요소를 라즈베리로 교체해보자.
+        console.dir(fruitsArr.splice(3,1,'라즈베리'));
+        console.dir(fruitsArr);
+
+        //10. slice
+        // 원본배열을 변경시키지 않고, 원하는 위치의 배열요소를 복제하는 메서드
+        console.dir(fruitsArr.slice(2,4));
+
+        //11. join
+        console.dir(`[${fruitsArr.join('][')} ]`);
+
+        //12. filter
+        console.dir(fruitsArr.filter(function(e){
+            return e.length == 3;
+        }));
+
+        //13. find
+        console.dir(fruitsArr.find(function(e){
+            return e.search('베리') > -1;
+        }));
+
+        //14. map
+        // fruitsArr 의 각 요소의 첫글자를 저장하고 있는 배열을 반환 받아보자.
+        console.dir(fruitsArr.map(function(e){return e[0]}))
+
+        //15. flatMap
+        // 반정형 형태로 넘어온 데이터인데, 여기 있는 모든 숫자들에 10을 곱한 배열을 반환해주세요.
+        let numArr = [1,2,3,[4,5,6],[[7,8],[9,10],[11,12]]]
+
+        let res = numArr.flatMap(function(e){return e})
+        .flatMap(function(e){return e})
+        .map(function(e){return e*10});
+        
+        console.dir(res);
+
+        //16. reduce
+        // reduce는 이전 회차의 콜백함수가 반환한 return값을 다음 회차의 acc 매개변수로 전달
+        //배열에서 홀수값만 모두 더하는 reduce , 결과: 24
+        let reduceArr = [2,3,4,5,6,7,8,9,10];
+        let reduceRes = reduceArr.reduce(function(acc,cv){
+            if(cv % 2 != 0) return acc + cv;
+            return acc;
+        },0);
+
+        console.dir(reduceRes);
+    </script>
+    
+
+
+
+</body>
+</html>

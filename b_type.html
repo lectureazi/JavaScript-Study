@@ -68,6 +68,22 @@
         }
     </script>
 
+    <h1>자바스크립트 타입들의 boolean 변환</h1>
+    <pre>
+        조건식에서 활용될 경우 false가 되는 값들 : 0, '', null, undefined, NaN, []
+        조건식에서 활용될 경우 true가 되는 값들  : false가 되는 경우를 제외 하고 모두 true
+
+    </pre>
+    <script>
+        console.dir(0&&true?'0은 true입니다':'0은 false 입니다.');
+        console.dir(''&&true?'공백문자는 true입니다':'공백문자는은 false 입니다.');
+        console.dir(null&&true?'null은 true입니다':'null은 false 입니다.');
+        console.dir(undefined&&true?'undefined은 true입니다':'undefined은 false 입니다.');
+        console.dir(NaN&&true?'NaN은 true입니다':'NaN은 false 입니다.');
+        console.dir([]&&true?'[]은 true입니다':'[]은 false 입니다.');
+    </script>
+
+
     <h1> 타입 관련 함수 </h1>
     <h2>String</h2>
     <pre>
@@ -76,32 +92,105 @@
     </pre>
     <div id="stringNote" class="note"></div>
     <script>
+        
         let stringNote = document.querySelector('#stringNote');
+        stringNote.innerHTML = '';
 
         let test = 'Multicampus JAVA Class';
 
         // 문자를 대문자로 변환하여 console.dir()을 사용해 출력 해주세요.
+        stringNote.innerHTML += test.toUpperCase() + '<br>';
         console.dir(test.toUpperCase());
 
         // 문자를 소문자로 변환하여 console.dir()을 사용해 출력 해주세요.
+        stringNote.innerHTML += test.toLowerCase() + '<br>';
         console.dir(test.toLowerCase());
 
         let fruits = '사과,바나나,복숭아,키위,파인애플';
         //fruits를 , 를 기준으로 잘라 console.dir()을 사용해 출력 해주세요.
+        stringNote.innerHTML += test.split(',') + '<br>';
         console.dir(fruits.split(','));
 
         //test를 0번 인덱스부터 3번인덱스까지 잘라 console.dir()을 사용해 출력 해주세요.
+        stringNote.innerHTML += test.substring(0,4) + '<br>';
         console.dir(test.substring(0,4));
 
         //test의 JAVA를 JavaScript로 변환해 console.dir()을 사용해 출력 해주세요.
+        stringNote.innerHTML += test.replace('JAVA','JavaScript') + '<br>';
         console.dir(test.replace('JAVA','JavaScript'));
 
     </script>
 
     <h1>문자열 Template Literals</h1>
+    <div id="templateLiteralsNote" class="note"></div>
 
+    <script>    
+        let tln = document.querySelector('#templateLiteralsNote');
 
+        let name = '하명도';
+        let age = 15;
+        let gender = '남성';
+        let introduce = '제 이름은 ' + name + '이고, 나이는 ' + age + '살 이고, 성별은 ' + gender + '입니다.';
 
+        tln.innerHTML += '이름 : ' + name + '<br>';
+        tln.innerHTML += '나이 : ' + age + '<br>';
+        tln.innerHTML += '성별 : ' + gender + '<br>';
+        tln.innerHTML += '소개 : ' + introduce + '<br>';
+
+        tln.innerHTML += '<br>';
+        tln.innerHTML += '[template literals 적용]<br>';
+
+        introduce = `제 이름은 ${name} 이고, 나이는 ${age}살 이고, 성별은 ${gender} 입니다.`;
+
+        tln.innerHTML += `이름 : ${name} <br>`;
+        tln.innerHTML += `나이 : ${age} <br>`;
+        tln.innerHTML += `성별 : ${gender} <br>`;
+        tln.innerHTML += `소개 : ${introduce} <br>`;
+
+        let poem = '어느 날 네가 또 슬피 울 때, 네가 기억하기를 \n'
+                   + '네가 나의 자랑이란걸 \n'
+                   +  '기억력이 좋은 네가 기억하기를, \n'
+                   +  '바라면서 나는 얼쩡거렸지. ';
+
+        let poemLiteral = `어느 날 네가 또 슬피 울 때, 네가 기억하기를
+네가 나의 자랑이란걸
+기억력이 좋은 네가 기억하기를,
+바라면서 나는 얼쩡거렸지.`;
+
+        console.dir(poem);
+        console.dir(poemLiteral);
+
+    </script>
+
+    <h2>Math</h2>
+    <pre>
+        자바스크립트 내장 객체로 숫자를 다루기 위한 메서드를 가지고 있다.
+    </pre>
+    <div id="mathNote" class="note"></div>
+    <script>
+        let mathNote = document.querySelector('#mathNote');
+
+        // 절대값
+        mathNote.innerHTML += `-123의 절대값 : ${Math.abs(-123)} <br>`;
+
+        // 난수
+        mathNote.innerHTML += `난수를 구해보자 : ${Math.random()} <br>`
+
+        // 반올림
+        mathNote.innerHTML += `123.456 반올림 : ${Math.round(123.456)} <br>`
+
+        // 올림
+        mathNote.innerHTML += `123.456 올림 : ${Math.ceil(123.456)} <br>`
+
+        // 내림 
+        mathNote.innerHTML += `123.456 내림 : ${Math.floor(123.456)} <br>`
+
+        // Number.toFixed 
+        // 고정소수점 방식으로 숫자를 표기,
+        // 원하는 소수점 자리에서 반올림하는 용도로 사용이 가능
+        mathNote.innerHTML += `123.456 소숫점 둘째자리 고정소수점 방식 : ${123.451.toFixed(2)} <br>`
+
+    </script>
 
 
 
