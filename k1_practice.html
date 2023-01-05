@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(htmlElements.length == 1) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
+</head>
+<body>
+    <h1>practice</h1>
+    <pre>
+        Student 인스턴스의 모든 속성을 출력할 수 있도록 Student의 toString을 오버라이드 하시오.
+
+        * Student의 인스턴스가 prototype으로 참조하고 있는 프로토타입객체의 속성도 모두 출력하여야 합니다.
+        * Student의 toString을 상속받는 객체로 toString을 호출 할 경우, Student를 상속받는 객체의 속성도 모두 출력되어야 합니다.
+
+    </pre>
+    <div id="pracNote" class="note"></div>
+    <script>
+        // Student 생성자 함수를 만들어 보자.
+        function Student(arcademy, name){
+
+            this.arcademy = arcademy;
+            this.name = name;
+
+            this.getTotalScore = function(){
+                return this.kor + this.eng + this.math;
+            };
+
+            // object 객체의 toString 메서드를 오버라이드
+            this.toString = function(){
+                let arr = [];
+
+                for(key in this){
+                    if(typeof(this[key]) != 'function'){
+                        arr.push(`${key} : ${this[key]}`);
+                    }
+                }
+
+                arr.sort();
+                return arr.join(' / ');
+              
+	        }
+        }
+
+        // new 생성자함수() 를 했을 때 생기는 일
+        // 1. 빈 객체를 생성해 heap영역에 올리고, 빈 객체의 주소를 생성자 함수내의 this에 바인딩
+        // 2. 생성자 함수안에서, this에 바인딩 된 객체에 속성을 추가.
+        // 3. 속성 추가가 끝나면 this를 return
+        let hmd = new Student('mc','하명도',100, 100, 100);
+        
+        let highSchoolStudent = {
+            shcoolLevel:'고등학교',
+            age : 17
+        }
+
+        let MiddleSchoolStudent = {
+            shcoolLevel:'중학교',
+            age : 15
+        }
+
+        hmd.__proto__ = highSchoolStudent;
+
+        $('#pracNote', 'hmd의 프로토타입객체로 highSchoolStudent를 지정');
+        $('#pracNote', 'hmd.__proto__ = highSchoolStudent;');
+        $('#pracNote', hmd);
+        $('#pracNote', `----------------------------------------------------------------`);
+
+        hmd.__proto__ = MiddleSchoolStudent;
+
+        $('#pracNote', 'hmd의 프로토타입객체로 MiddleSchoolStudent 지정');
+        $('#pracNote', 'hmd.__proto__ = MiddleSchoolStudent;');
+        $('#pracNote', hmd);
+        $('#pracNote', `----------------------------------------------------------------`);
+
+        let zizzon = {
+            game : '메이플스토리',
+            characterName : '지존전사짱짱',
+            level : 280
+        }
+
+        zizzon.__proto__ = hmd;
+        $('#pracNote', 'hmd를 프로토타입객체로 가지는 zizzon 객체');
+        $('#pracNote', 'zizzon.__proto__ = hmd;');
+        $('#pracNote', zizzon);
+        $('#pracNote', `----------------------------------------------------------------`);
+
+
+
+
+
+
+    </script>
+</body>
+</html>

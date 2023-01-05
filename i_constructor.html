@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(htmlElements.length == 1) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
+</head>
+<body>
+    <h1>생성자</h1>
+    <pre>
+        * 생성자 함수는 그냥 함수이다.
+        * 함수를 호출 할 때 new 연산자를 사용해 호출하면 생성자 함수로 동작한다.
+        * 생성자 함수로 만든 함수는, 일반 함수 용도로는 사용하지 않는다.
+        * 생성자 함수임을 표시하기 위해, 함수의 첫 글자를 대문자로 한다.
+    </pre>
+    <div id="constructorNote" class="note"></div>
+    <script>
+
+        // Student 생성자 함수를 만들어 보자.
+        function Student(arcademy, name, kor, eng, math){
+
+            this.arcademy = arcademy;
+            this.name = name;
+            this.kor = kor;
+            this.eng = eng;
+            this.math = math;
+
+            this.getTotalScore = function(){
+                return this.kor + this.eng + this.math;
+            }
+
+            // object 객체의 toString 메서드를 오버라이드
+            this.toString = function(){
+                return `arcademy : ${this.arcademy}, name : ${name}, 총점 : ${this.getTotalScore()}`
+            }
+        }
+
+        // new 생성자함수() 를 했을 때 생기는 일
+        // 1. 빈 객체를 생성해 heap영역에 올리고, 빈 객체의 주소를 생성자 함수내의 this에 바인딩
+        // 2. 생성자 함수안에서, this에 바인딩 된 객체에 속성을 추가.
+        // 3. 속성 추가가 끝나면 this를 return
+        let hmd = new Student('mc','하명도',100,100,100);
+        console.dir(hmd)
+        $('#constructorNote',hmd);
+
+
+
+
+    </script>
+
+
+
+
+
+
+
+
+</body>
+</html>

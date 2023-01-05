@@ -12,14 +12,19 @@
         }
     </style>
     <script>
-        let $ = (htmlElement, text) => {
-            htmlElement.innerHTML += `${text}<br>`;
-        }
+        let $ = function(cssSelector, message){
+           
+            let htmlElements = document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            return htmlElements;
+       }
     </script>
 </head>
 <body>
-
-
 
     <h1>Function</h1>
     <pre>
@@ -37,9 +42,8 @@
     <script>
         hello();
         function hello(){
-            fnc1.innerHTML += 'hello function';
-            
-            $(fnc1,'$함수를 사용해 찍은 hello function');
+            fnc1.innerHTML += 'hello function<br>';
+            $('#fnc1','$함수를 사용해 찍은 hello function');
         }
     </script>
 
@@ -76,7 +80,7 @@
         // 배열안에 들어있는 모든 요소를 인덱스와 함께 콘솔에 출력
         lambda.innerHTML += `----------------------------<br>`;
         let lambda1 = (e,i) => {
-            $(lambda,`${i}. ${e}`);
+            $('#lambda',`${i}. ${e}`);
         }
 
         fruitsArr.forEach(lambda1);
@@ -281,6 +285,19 @@
         }
 
         noneArgs(1,2,3,4,5,6,67,7,8,89,6,32,24,42,4,35,'as','asdasd');
+    </script>
+
+    <script>
+
+        //html 요소객체의 style 속성을 사용해서 html의 css를 수정
+        //css 속성의 경우 snake표기법을, camelCase로 고쳐서 사용해야한다.
+       $('.note').forEach(e => {
+            e.addEventListener('click', ev => {
+                ev.target.style.backgroundColor='lightyellow';
+                ev.target.style.borderRadius='10px';
+                ev.target.style.transitionDuration='3s';
+            });
+        });
     </script>
 
 </body>

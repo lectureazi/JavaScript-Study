@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(htmlElements.length == 1) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
+</head>
+<body>
+    <h1>객체</h1>
+    <h2>객체 생성 및 호출</h2>
+    <pre>
+        자바스크립트의 객체는, {} 를 사용해 literal 방식으로 생성하거나
+        Object 생성자 함수를 사용해 객체를 수 있다.
+        객체의 속성에는 모든 타입이 올 수 있다.
+    </pre>
+    <div id="objectNote" class="note"></div>
+    <script>
+        // 객체를 literal로 생성
+        let sweet = {
+            title:'달콤한 나의 도시',
+            category:['문학','소설','한국문학'],
+            // - 는 산술연산자. 속성명을 문자열로 지정하면 된다.
+            'cate-cnt':3,
+        }
+
+        console.dir(sweet);
+
+        // Object 생성자 함수를 사용해 객체 생성
+        let summer = new Object();
+        console.dir(summer);
+
+        // 자바스크립트의 객체는 속성을 원할 때 추가 할 수 있다.
+        summer.title='여름'
+        summer.author='김애란'
+        summer.category=['문학','소설','한국문학']
+        sweet.author='정이현';
+
+        $('#objectNote',`sweet.title : ${sweet.title}`);
+        $('#objectNote',`sweet.author : ${sweet.author}`);
+        $('#objectNote',`sweet.category : ${sweet.category}`);
+        $('#objectNote',`sweet['cate-cnt'] : ${sweet['cate-cnt']}`);
+
+        // arr : 배열처럼 사용할 수 있도록 만든 객체를 유사배열객체라고 부른다. ex) NodeList
+        let arr = {
+            0:'a',
+            1:'a',
+            2:'a',
+            3:'a',
+            4:'a',
+        }
+
+        console.dir(arr);
+        console.dir(arr[0]);
+
+    </script>
+    <h2>객체의 메서드</h2>
+    <pre>
+        객체에 속한 함수를 메서드라 부른다.
+    </pre>
+    <div id="methodNote" class="note"></div>
+    <script>
+        let simba = {
+            name:'심바',
+            sing : function(title){
+                $('#methodNote', `${title}을 심바가 부르고 있습니다. 하쿠나마타타!`);
+            }
+        }
+
+        simba.sing('다이너마이트');
+    </script>
+
+    <h2>객체와 반복문</h2>
+    <pre>
+        for-in문을 사용하면, 객체의 속성명을 String 타입의 값으로 받아올 수 있다.
+    </pre>
+    <div id="forInNote" class="note"></div>
+    <script>
+        let godOfWar = {
+            title:'god of War',
+            price : 69800,
+            company:'산타모니카'
+        }
+
+        for(key in godOfWar){
+            $('#forInNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#forInNote',`------------------------`);
+
+    </script>
+
+    <h2>Object 속성 조작</h2>
+    <div id="propsNote" class="note"></div>
+    <script>
+        // villain 속성 추가
+        godOfWar.villian = '제우스';
+        $('#propsNote' ,'[[[[[[[[[villain 속성 추가]]]]]]]]]');
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+
+        // 속성 삭제
+        delete godOfWar.villian;
+        $('#propsNote' ,'[[[[[[[[[villain 속성 삭제]]]]]]]]]');
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+
+        // 속성 추가 금지
+        Object.preventExtensions(godOfWar);
+        godOfWar.villian = '제우스';
+        $('#propsNote' ,'[[[[[[[[[preventExtensions, villain 속성 추가]]]]]]]]]');
+        $('#propsNote', `Object.preventExtensions : ${Object.isExtensible(godOfWar)}`)
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+
+        delete godOfWar.company;
+        $('#propsNote' ,'[[[[[[[[[preventExtensions, company 속성 삭제]]]]]]]]]');
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+
+        // 속성 추가, 삭제 금지
+        Object.seal(godOfWar);
+        godOfWar.villian = '제우스';
+        $('#propsNote' ,'[[[[[[[[[seal, villain 속성 추가]]]]]]]]]');
+        $('#propsNote', `Object.preventExtensions : ${Object.isExtensible(godOfWar)}`)
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+
+        delete godOfWar.title;
+        $('#propsNote' ,'[[[[[[[[[seal, title 속성 삭제]]]]]]]]]');
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+
+        // 속성 추가, 삭제 및 속성값 변경 금지
+        Object.freeze(godOfWar);
+
+        godOfWar.villian = '제우스';
+        $('#propsNote' ,'[[[[[[[[[freeze, villain 속성 추가]]]]]]]]]');
+        $('#propsNote', `Object.preventExtensions : ${Object.isExtensible(godOfWar)}`)
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+
+        delete godOfWar.title;
+        $('#propsNote' ,'[[[[[[[[[freeze, title 속성 삭제]]]]]]]]]');
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+
+        godOfWar.title = '갓오브워3';
+        $('#propsNote' ,'[[[[[[[[[freeze, title 속성을 갓오브워3 으로 변경]]]]]]]]]');
+        for(key in godOfWar){
+            $('#propsNote',`${key}  :  ${godOfWar[key]}`);
+        }
+        $('#propsNote',`------------------------<br>`);
+        
+
+
+
+
+
+    </script>
+
+
+    
+
+
+    
+
+
+
+
+
+
+</body>
+</html>
