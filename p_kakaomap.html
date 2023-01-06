@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1bf3dc5845d1064ec3780a2eaac4512b"></script>
+</head>
+<body>
+    <div id="map" style="width:500px;height:400px; background-color: lightblue;"></div>
+    <button id="btn">현재위치확인</button>
+
+    <script>
+
+        let renderMap = (lat, log) => {
+            var container = document.querySelector('#map'); //지도를 담을 영역의 DOM 레퍼런스
+            var options = { //지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(lat, log), //지도의 중심좌표.
+                level: 3 //지도의 레벨(확대, 축소 정도)
+            };
+
+            var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+            var marker = new kakao.maps.Marker({
+                         map: map,
+                         position: new kakao.maps.LatLng(lat, log)
+            });
+        }
+
+        let success = pos => {
+            renderMap(pos.coords.latitude, pos.coords.longitude);
+        }
+
+        let error = error => {
+            console.log(`error code : ${error.code} , ${error.message}`);
+        }
+
+        var options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+        btn.addEventListener('click', ev => {
+            let geo = navigator.geolocation;
+            geo.getCurrentPosition(success, error, options);
+        });
+
+
+
+
+
+    </script>
+</body>
+</html>

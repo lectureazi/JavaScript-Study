@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = this.document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(htmlElements.length == 1) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
+</head>
+<body>
+    <h1>Window 객체</h1>
+    <pre>
+        window 객체는 전역객체이다.
+        window 객체는 DOM 관련 속성, BOM 관련 속성, 자바스크립트와 관련된 속성을 가지고 있다.
+
+        BOM : Browser Object Model
+              브라우저와 관련된 객체들
+              location 객체, navigator 객체, history 객체, screen 객체
+    </pre>
+    <h2> open : 새 브라우저창을 생성하는 window 객체의 메서드 </h2>
+    <p onclick="openNaver()" style="width: 30%;">네이버</p>
+    <p onclick="openDaum()" style="width: 30%;">다음</p>
+
+
+    <h2>입력값</h2>
+    <input type="text" id="inp">
+    <p onclick="openChild()" style="width: 30%;" class="parents">자식창열기</p>
+    <p onclick="alertByChild()" style="width: 30%;" class="child">자식창에서 부모창에 alert 띄우기</p>
+    <p onclick="alertByParents()" style="width: 30%;" class="parents">부모창에서 자식창에 alert 띄우기</p>
+    <div id="log" class="note"></div>
+    
+    <script>
+        let childWindow;
+
+        if(opener){
+            $('.parents').forEach(e => e.style.display='none');
+        }else{
+            $('.child').style.display='none';
+        }
+
+        let alertByChild = () => {
+            opener.alert($('#inp').value);
+            //opener.document.querySelector('#inp').innerHTML += `from child : ${$('#inp').value} <br>`;
+            $.apply(opener, ['#log',[`from child : ${$('#inp').value}`]]);
+	    }
+
+	    let alertByParents = () => {
+            if(!childWindow) {
+                alert('자식창이 없습니다.');
+            }
+
+            childWindow.alert($('#inp').value);
+            //childWindow.document.querySelector('#inp').innerHTML += `from parents : ${$('#inp').value} <br>`;
+            $.apply(childWindow, ['#log',[`from parents : ${$('#inp').value}`]]);
+	    }
+
+        let openNaver = () =>{
+            open('https://www.naver.com','_self');
+        }
+
+        let openDaum = () =>{
+            let x = screen.availWidth/2 - 300;
+            let y = screen.availHeight/2 - 250;
+            open('https://www.daum.net','_target',`popup=true, width=600, height=500, left=${x}, top=${y}`);
+        }
+
+        let openChild = () => {
+            if(childWindow) {
+                alert('이미 열린 자식창이 존재합니다.');
+                return;
+            }
+
+            let x = screen.availWidth/2 - 300;
+            let y = screen.availHeight/2 - 250;
+            childWindow = open('/o_window.html','_target',`popup=true, width=600, height=500, left=${x}, top=${y}`);
+            console.dir('-----------childWindow-----------')
+            console.dir(childWindow);
+            console.dir('-----------childWindow-----------')
+        }
+
+    </script>
+
+    <h2>screen 객체</h2>
+    <div id="screenNote", class="note"></div>
+    <script>
+        $('#screenNote', `screent.height : ${screen.height}`);
+        $('#screenNote', `screent.width : ${screen.width}`);
+
+        // window의 작업표시줄 높이만큼 height에서 빠짐
+        $('#screenNote', `screent.availHeight : ${screen.availHeight}`);
+        $('#screenNote', `screent.availWidth : ${screen.availWidth}`);
+    </script>
+
+    <h2>location 객체</h2>
+    <p>브라우저창의 주소와 관련된 객체</p>
+    <span onclick="href()">location.href   : 네이버로 이동</span><br>
+    <span onclick="assign()">location.assign() : 구글로 이동</span><br>
+    <span onclick="replace()">location.replace(): 다음으로 이동, 뒤로 가기가 안됨</span><br>
+    <span onclick="reload()">location.reload() : 페이지 새로고침</span><br>
+
+    <script>
+        let href = () => {
+            console.dir(location);
+            console.dir(location.href);
+            location.href='https://www.naver.com';
+        }
+
+        let assign = () => {
+            location.assign('https://www.google.com');
+        }
+
+        let replace = () => {
+            location.replace('https://www.daum.net');
+        }
+
+        let reload = () => {
+            location.reload();
+        }
+    </script>
+
+    <h2>history</h2>
+    <p>브라우저의 세션 기록과 관련된 객체</p>
+    <span onclick="back()">history.back()   : 뒤로 가기</span><br>
+    <span onclick="forward()">history.forward() : 앞으로 가기</span><br>
+    <span onclick="go()">history.go(2): 양수n : 앞으로 n페이지만큼 가기, 음수n : 뒤로 n페이지만큼 가기</span><br>
+    <script>
+        let back = () => {
+            history.back();
+        }
+
+        let forward = () => {
+            history.forward();
+        }
+
+        let go = () => {
+            history.go(2);
+        }
+
+    </script>
+
+    <h2>navigator 객체</h2>
+    <pre>브라우저에 대한 정보를 가지고 있는 객체</pre>
+    <div id="naviNote" class="note"></div>
+    <script>
+        $('#naviNote', `언어 : ${navigator.language}`);
+        $('#naviNote', `전체 정보 : ${navigator.userAgent}`);
+    </script>
+</body>
+</html>

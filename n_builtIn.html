@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(htmlElements.length == 1) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
+</head>
+<body>
+    <h1>자바스크립트 내장 객체,함수</h1>
+    <h2>url인코딩, url디코딩</h2>
+    <pre>
+        1. url인코딩
+           브라우저의 url은 전세계 어디에서나 접근할 수 있어야 함으로, url을 구성하는 문자는 전 세계 모든 문자셋에서 공통으로 사용하는
+           아스키코드표를 기준으로 작성되어야 한다.
+
+           url을 구성하는 문자열을 아스키코드표에서 표현가능한 형태로 인코딩 해주는 함수와, 
+           인코딩된 url을 사용자 환경의 문자셋으로 디코딩 해주는 함수가 필요하다.
+
+           1. 인코딩
+           encodURI             :  인터넷 주소에 사용되는 일부 특수문제를 제외하고 인코딩 (@,*,-,_,.,/,:,;,/,=,?,&)
+           encodeURIComponent   :  알파벳과 숫자를 제외한 모든 문자를 인코딩
+
+           2. 디코딩
+           decodeURI            :  encodURI로 인코딩된 문자열을 디코딩  
+           decodeURIComponent   :  encodeURIComponent로 인코딩된 문자열 디코딩
+
+
+           uri(Uniform Resource Idendifier) : 통합 자원 식별자
+           url(Uniform Resource Locator)    : 통합 자원 위치
+
+           https://localhost:5500/board?bIdx=100#a
+           https://localhost:5500/board?bIdx=101#b
+
+           url : https://localhost:5500/board
+           uri : https://localhost:5500/board?bIdx=100#a
+           uri : https://localhost:5500/board?bIdx=101#b
+
+           같은 url, 다른 uri
+
+    </pre>
+    <div class="note" id="urlEncodeNote"></div>
+    <script>
+
+        let uri = 'https://www.naver.com?query=한글날';
+        let encodedURI = encodeURI(uri);
+        let encodedURIByComponent = encodeURIComponent(uri);
+        $('#urlEncodeNote', `encodeURI : ${uri} => ${encodedURI}`);
+        $('#urlEncodeNote', `encodeURIComponent : ${uri} => ${encodedURIByComponent}`);
+
+        $('#urlEncodeNote', `decodeURI : ${encodedURI} => ${decodeURI(encodedURI)}`);
+        $('#urlEncodeNote', `decodeURIComponent : ${encodedURIByComponent} => ${decodeURIComponent(encodedURIByComponent)}`);
+
+    </script>
+    <h1>eval 함수와 Function 생성자</h1>
+    <pre>
+        문자열을 자바스크립트 코드로 변환해 실행하는 함수
+        eval을 쓰지 말고 Function 생성자를 쓸 것이 강력하게 권고된다.
+    </pre>
+    <label>jsCode의 배경색을 빨간색으로 바꾸는 자바스크립트 코드를 입력하세요.</label><br>
+    <textarea id="jsCode" class="note" style="width:400px"></textarea><br>
+    <button id="btn">실행</button>
+    <script>
+        btn.addEventListener('click', (e) => {
+            let inpCode = jsCode.value;
+            //eval(inpCode);
+            let fnc = new Function(inpCode);
+            fnc();
+        })
+    </script>
+
+    <h1>Date 객체</h1>
+    <div id="dateNote" class="note"></div>
+    <script>
+        // 현재시간
+        // 시스템시간을 받아오는 객체
+        let now = new Date();
+        let yesterDay = new Date(2023,1,5,10,43,21);
+        let christmas = new Date('2022 12 25');
+        console.dir(christmas);
+        $('#dateNote', `${christmas.getFullYear()}`);
+        $('#dateNote', `${christmas.getMonth()+1}`);
+        $('#dateNote', `${christmas.getDate()}`);
+
+        $('#dateNote', `-----------today-----------`);
+        $('#dateNote', `-----------2023년 1월 5일 할인 하는 날----------`);
+        $('#dateNote', `${now.getFullYear()}`);
+        $('#dateNote', `${now.getMonth()+1}`);0
+        $('#dateNote', `${now.getDate()}`);
+        $('#dateNote', `${now.getHours()}`);
+        $('#dateNote', `${now.getMinutes()}`);
+        $('#dateNote', `${now.getSeconds()}`);
+
+        if(now.getFullYear() == 2023 && now.getMonth()+1 == 1 && now.getDate() == 5){
+            alert('할인합니다');
+        }
+
+    </script>
+
+    <h1>현재 시간</h1>
+    <div id="checkAsync"></div>
+    <div id="clock" class="note" style="color:white"></div>
+    <script>
+
+        //setTimeout :   두번째 매개변수에 지정한 ms가 지났는지 체크한 뒤
+        //               콜백함수 안에 있는 코드를 실행
+
+        //setInterval : 두번째 매개변수에 지정한 ms가 지날 때마다 
+        //              반복적으로 콜백함수 안에 있는 코드를 실행
+
+        //setTimout, setInterval은 비동기(Asynchronous)로 동작하는 함수
+        //synchronous : 윗 라인의 코드 실행이 끝나는 시간과, 아래 라인의 코드 실행이 시작되는 시간을 맞추다.
+        //Asynchronous : 윗 라인의 코드 실행이 끝나는 시간과, 아래 라인의 코드 실행이 시작되는 시간이 서로 무관
+
+        let colors = ['red','blue','green','gold','pink','gray','lightred']
+        let idx = 0;
+        setInterval(() => {
+            now = new Date();
+            $('#clock').innerHTML = '';
+            $('#clock', `<h3>${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일</h3>`);
+            $('#clock', `<h2>${now.getHours()}시 ${now.getMinutes()}분 ${now.getSeconds()}초<h2>`);
+            $('#clock').style.backgroundColor = colors[idx++];
+            if(idx == colors.length-1) idx = 0;
+        }, 1000);
+        
+        $('#checkAsync', `setTimeout 함수의 종료와 무관하게 실행되는 코드입니다.`);
+
+    </script>
+    <h1>JSON</h1>
+    <pre>
+        JSON : JavaScript Object Notation
+        데이터를 표현하기 위한 문자기반 데이터 포멧, 네트워크 통신으로 데이터를 주고 받을 때 아주 유용하다.
+        JSON은 데이터를 표현하기 위해 자바스크립트 객체 문법을 따른다.
+
+        MIME Type : application/json
+
+        json 표현 양식
+        
+        {
+            "string":"", //반드시 ""을 사용해야 한다.
+            "number":10, //10진수 정수, 실수, 지수
+            "boolean":true,
+            "null":null,
+            "array":["a","b","c"],
+            "object":{"key":"value"}
+        }
+
+        https://kr.piliapp.com/json/validator/
+
+        JSON 내장 객체
+
+        JSON => JavaScript Object
+        JSON.parse(json data);
+
+        JavaScript Object => JSON
+        JSON.stringify(JavaScript Object);
+
+    </pre>
+    <div id="jsonNote" class="note"></div>
+    <script>
+        let jsObj = {
+            "string":"", //반드시 ""을 사용해야 한다.
+            "number":10, //10진수 정수, 실수, 지수
+            "boolean":true,
+            "null":null,
+            "array":["a","b","c"],
+            "object":{"key":"value"}
+        };
+
+        $('#jsonNote',` jsObj의 타입 :  ${typeof(jsObj)}`);
+
+        let jsonData = JSON.stringify(jsObj);
+        $('#jsonNote',` jsonData 타입 :  ${typeof(jsonData)}`);
+        $('#jsonNote',` jsonData      :  ${jsonData}`);
+
+        $('#jsonNote',` JSON.parse :  ${typeof(JSON.parse(jsonData))}`);
+        console.dir(JSON.parse(jsonData));
+
+
+
+    </script>
+
+</body>
+</html>
