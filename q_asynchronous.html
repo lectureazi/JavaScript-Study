@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = this.document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(htmlElements.length == 1) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
+</head>
+<body>
+    <h1>비동기</h1>
+    <pre>
+        synchronous  : synch, 시간상으로 맞물리는, 앞의 코드가 종료되는 시점과, 뒤의 코드가 실행되는 시점이 일치
+        asynchronous : 동기가 아닌, a + synchronous, 앞의 코드가 종료되는 시점과 뒤의 코드가 실행되는 시점이 일치하지 않는
+                       코드가 동시에 실행되는 것 처럼 보이는.
+
+        자바스크립트는 싱글쓰래드 언어이다. 어떻게 동시성을 구현할까?
+
+        자바스크립트 인터프리터는 싱글쓰래드로 자바스크립트의 코드를 읽는다.
+        중간에 비동기로 동작해야하는 코드를 만나면, 해당 코드의 수행은 브라우저의 엔진에게 실행을 위임
+        브라우저가 비동기적으로 수행 되어야 하는 작업을 병렬로 처리하고 난 뒤,
+        callback queue에 비동기 작업이후 실행되어야하는 callback함수 객체를 넣어준다.
+        만약 call stack에 수행해야할 작업이 없다면, 자바스크립트가 callback 함수객체를 callback queue에서 가져와 수행
+        
+    </pre>
+    <div id="asynchNote" class="note" style="display: flex; justify-content: center; 
+                        align-items: center; 
+                        background-color: lightcoral; ">
+        <h1 style="color:white">5</h1>
+    </div>
+    <script>
+        // 5초동안 카운트다운을 하고 마지막에 Happy new Year! 를 출력해주는 div
+        // 5초부터 0초까지 카운트이 될 때 배경색은 'red','blue','green','gold','pink', 'lightred' 로 변경
+
+        let colors = ['red','blue','green','gold','pink', 'lightcoral']
+        let countDown = 4;
+
+        setTimeout(() => {
+            $(`#asynchNote`).innerHTML = '';
+            $('#asynchNote', `<h1 style="color:white">${countDown}</h1>`);
+            $(`#asynchNote`).style.backgroundColor = colors[countDown];
+            countDown--;
+
+            setTimeout(() => {
+                $(`#asynchNote`).innerHTML = '';
+                $('#asynchNote', `<h1 style="color:white">${countDown}</h1>`);
+                $(`#asynchNote`).style.backgroundColor = colors[countDown];
+                countDown--;
+
+                setTimeout(() => {
+                    $(`#asynchNote`).innerHTML = '';
+                    $('#asynchNote', `<h1 style="color:white">${countDown}</h1>`);
+                    $(`#asynchNote`).style.backgroundColor = colors[countDown];
+                    countDown--;
+
+                    setTimeout(() => {
+                        $(`#asynchNote`).innerHTML = '';
+                        $('#asynchNote', `<h1 style="color:white">${countDown}</h1>`);
+                        $(`#asynchNote`).style.backgroundColor = colors[countDown];
+                        countDown--;
+                        
+                        setTimeout(() => {
+                            $(`#asynchNote`).innerHTML = '';
+                            $('#asynchNote', `<h1 style="color:white">${countDown}</h1>`);
+                            $(`#asynchNote`).style.backgroundColor = colors[countDown];
+                            countDown--;
+
+                            setTimeout(() => {
+                                $(`#asynchNote`).innerHTML = '';
+                                $('#asynchNote', `<h1 style="color:white">HAPPY NEW YEAR!</h1>`);
+                            },1000);
+                        
+                        },1000);
+
+                    },1000);
+
+                },1000);
+
+            },1000);
+
+        },1000);
+
+    </script>
+    <h1>2. Promise</h1>
+    <pre>
+        Promise는 자바스크립트의 내장객체로 Callback Hell을 해결하기 위해 등장.
+        Promise는 비동기작업을 수행하고, 작업의 성공/실패 여부에 따라 then, catch 메서드를 메서드체인방식으로 사용할 수 있는 객체
+
+        Promise의 상태
+            1. pending      : Promise의 연산이 완료되지 않는 상태
+            2. fullfilled   : Promise의 연산이 성공적으로 완료된 상태, resolve() 메서드가 호출된 상태를 의미
+            3. rejected     : Promise 연산에 실패한 상태 / reject() 메서드가 호출된 상태를 의미
+
+        Promise의 메서드 
+            1. resolve 메서드 : Promise의 상태를 fullfilled 상태로 만들고, 연산의 결과값을 then 메서드로 전달.
+            2. reject  메서드 : Promise의 상태를 rejected 상태로 만들고, 에러 객체를 catch메서드로 전달.
+
+        Promise의 후속처리 메서드
+            1. then : resolve메서드를 통해 전달받은 결과값을 사용해, 비동기 이후의 후속처리 연산을 수행하고, Promise 객체를 반환
+            2. catch : reject 메서드를 통해 전달 받은 에러 객체를 사용해 비동기 이후의 예외처리를 수행하고, Promise 객체를 반환
+            3. finally : Promise의 fullfilled, rejected 여부에 상관없이 반드시 실행되어야 하는 코드를 작성하는 메서드
+
+        Promise 구문
+
+        1. Promise 객체를 생성할 때, 생성자의 매개변수에 callback 함수를 등록, callback 함수에서 resolve, reject 함수객체를
+          받을 수 있도록 매개변수를 2개 선언
+
+        2. then 메서드의 경우 콜백함수의 매개변수에 Promise의 reslove에 넘겨준 값이 넘어오게 된다.
+           then 메서드가 return 값이 있을 경우, 새로운 Promise를 반환한다.
+           then 메서드의 return이 Promise 객체를 명시하는 경우에는, 우리가 명시한 Promise가 반환된다.
+
+           
+
+    </pre>
+    <div id="asynchNote2" class="note" style="display: flex; justify-content: center; 
+    align-items: center; 
+    background-color: lightcoral; ">
+    <button id="btnPromise">실행</button>
+    </div>
+    <script>
+
+        // 1. Promise 객체의 생성
+        //    new Promise(callbackFnc(resolve, reject));
+        let getCountDown = () => {
+            return new Promise((resolve, reject) => {
+                let countDown = prompt('카운트다운을 시작할 숫자를 입력하세요.');
+                // 매개변수로 사용자가 입력한 countDown 값을 넘겨줌
+                resolve(countDown);
+            })
+        }
+
+        let asyncChangeColor = (countDown, cssSelector) => {
+            let colors = ['red','blue','green','gold','pink', 'lightcoral']
+            
+            return new Promise((resolve, reject) => {
+                if(countDown == null) reject(new Error('카운트다운 숫자를 입력해주세요.'));
+                if(countDown < 0 || countDown > 5) reject(new Error('카운트다운은 5보다 크거나 음수일 수 없습니다.'));
+
+                setTimeout(() => {
+                    console.dir(countDown);
+                    $(cssSelector).innerHTML = '';
+                    $(cssSelector, `<h1 style="color:white">${countDown}</h1>`);
+                    $(cssSelector).style.backgroundColor = colors[countDown];
+                    countDown--;
+                    resolve(countDown);
+                },1000);
+            }); 
+        };
+
+        let renderComments = (cssSelector) => {
+            new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        $(cssSelector).innerHTML = '';
+                        $(cssSelector, `<h1 style="color:white">HAPPY NEW YEAR!</h1>`);
+                        resolve();
+                    },1000);
+                });
+            };
+
+        let cd = () => {getCountDown()
+                        //.then(v => v)
+                        .then(v => asyncChangeColor(v, '#asynchNote2'))
+                        .then(v => asyncChangeColor(v, '#asynchNote2'))
+                        .then(v => asyncChangeColor(v, '#asynchNote2'))
+                        .then(v => asyncChangeColor(v, '#asynchNote2'))
+                        .then(v => asyncChangeColor(v, '#asynchNote2'))
+                        .then(v => asyncChangeColor(v, '#asynchNote2'))
+                        .then(() => renderComments('#asynchNote2'))
+                        .catch(error => {
+                                        alert(error.message);
+                                        console.error(error);
+                                        })
+
+                    .finally(() => {console.dir('finally method')});
+                }
+    
+    btnPromise.addEventListener('click',cd);
+</script>
+
+<h1>async, await</h1>
+<pre>
+    async/await
+    Promise 객체를 동기식 코드처럼 사용하기 위해 등장.
+
+    사용방법
+    비동기 코드를 동기식 코드처럼 다루고 싶은 함수의 선언부 앞에, async 예약어를 붙여준다.
+    async함수안에서, 비동기로 동작해야하는 코드를 Promise 객체를 반환하는 함수로 만들어주고, 해당 함수 앞에 await 예약어를 사용해준다.
+    await예약어는 async 함수 내에서 반환되는 Promise가 pending 상태를 벗어날 때 까지, async 함수의 실행을 일시정지시킨다.
+    promise의 상태가 fullfield가 되면 promise의 반환값을 return 받아 코드를 진행하고
+    rejected가 되면 reject된 값을 throw해준다.
+
+    async함수는 반환값이 있을 경우 Promise 객체 형태로 반환한다.
+</pre>
+<div id="asynchNote3" class="note" style="display: flex; justify-content: center; 
+    align-items: center; 
+    background-color: lightcoral; ">
+<button id="btnAsync">실행</button>
+</div>
+<script>
+    let asyncRes = (async ()=>{
+        try{
+            let idx = await getCountDown();
+            for(let i = idx; i > -1; i--){
+                await asyncChangeColor(i, '#asynchNote3');
+            }
+            renderComments('#asynchNote3');
+            return 'async 반환값';
+        }catch(error){
+            alert(error.message);
+            console.error(error);
+        }finally{
+            console.dir('finally method');
+        }
+    })();
+
+    // asyncRes에 Promise 결과값으로 반환된 'async 반환값' 을 콘솔에 찍어보세요.
+    asyncRes.then(v => {console.dir(v)});
+    (async () =>{console.dir(await asyncRes)})();
+
+
+</script>
+
+</body>
+</html>

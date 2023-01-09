@@ -5,10 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = this.document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(htmlElements.length == 1) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1bf3dc5845d1064ec3780a2eaac4512b"></script>
 </head>
 <body>
+    <h1>AJAX</h1>
+    <pre> Asynchronous Javascript and XML
+          자바스크립트의 비동기로 통신하는 기술
+          자바스크립트에서 비동기 HTTP통신을 제공해주는 객체: XMLHttpRequest, Fetch
+    </pre>
+    
     <div id="map" style="width:500px;height:400px; background-color: lightblue;"></div>
+    <input type="text" placeholder="검색할 키워드를 입력하세요." id="inpSearch">
     <button id="btn">현재위치확인</button>
 
     <script>
@@ -32,6 +57,8 @@
         let success = pos => {
             lat = pos.coords.latitude;
             log = pos.coords.longitude;
+            console.dir('lat : ' + lat);
+            console.dir('log : ' + log);
             renderMap(lat, log);
         }
 
@@ -48,15 +75,29 @@
         let geo = navigator.geolocation;
         geo.getCurrentPosition(success, error, options);
 
-        // undefined, undefiend
-        //console.dir('lat : '  +  lat);
-        //console.dir('log : '  +  log);
-      
 
+        // 비동기 통신을 위한 XHR 객체 생성
+        let xhr = new XMLHttpRequest();
+        
+        // 시작줄 작성  : http method, url, protocol
+        let query = '편의점';
 
+        //https://dapi.kakao.com/v2/local/search/keyword?query=편의점 &x=127.0735263&y=37.5481267
+        let url = `https://dapi.kakao.com/v2/local/search/keyword?query=${query}&x=${log}&y=${lat}`;
+        console.dir(url);
+        xhr.open('get', url);
 
+        // http header 작성
+        xhr.setRequestHeader('Authorization', 'KakaoAK fece723708634228bc6d90c3319a90ce');
+        xhr.send();
 
+        xhr.addEventListener('load', ()=>{
+            console.dir(xhr.response);
+        })
 
+    
     </script>
+
+
 </body>
 </html>
