@@ -109,17 +109,13 @@
             let keywordXY;
             let map; 
 
-            await((async(resolve,reject) => {
-                
-                // 두 개의 promise 객체를 먼저 생성해 비동기 작업을 시작
-                p1 = renderMap(userXY.lat, userXY.log);
-                p2 = getKeywordXY(userXY.lat, userXY.log);
+            // 두 개의 promise 객체를 먼저 생성해 비동기 작업을 시작
+            p1 = renderMap(userXY.lat, userXY.log);
+            p2 = getKeywordXY(userXY.lat, userXY.log);
 
-                //p1의 resolve()와 p2의 resolve()가 호출 되기를 대기
-                map = await p1;
-                keywordXY = await p2;
-
-            }))();
+            //p1의 resolve()와 p2의 resolve()가 호출 되기를 대기
+            map = await p1;
+            keywordXY = await p2;
 
             console.dir(keywordXY);
             console.dir(map);
