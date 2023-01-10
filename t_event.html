@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .bubble,.capture,.stop{
+            border : 1px solid;
+            padding : 20px;
+        }
+        
+        .div1{
+            background-color: red;
+        }
+        
+        .div2{
+            background-color: orange;
+        }
+        
+        .div3{
+            background-color: yellow;
+        }
+        
+        .div4{
+            background-color: green;
+        }
+    
+    </style>
+</head>
+<body>
+    <h1>이벤트 전파</h1>    
+    <h2>이벤트 버블링</h2>
+    <pre>
+        target의 이벤트 핸들러를 동작 시킨 이후 부모요소로 이벤트가 전파되는 것
+    </pre>
+    <div class="div1 bubble">
+        <div class="div2 bubble">
+            <div class="div3 bubble">
+                <div class="div4 bubble"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const colorArr = ['lightblue','blue','lightyellow','yellow'];
+        document.querySelectorAll('.bubble').forEach((e, i) => {
+            e.addEventListener('click', ev => {
+                setTimeout(() => {
+                    alert(e.className);
+                    console.dir(ev.target);
+                    e.style.backgroundColor = colorArr[i];
+                }, 500);
+            })
+        })
+    </script>
+
+    <h2>이벤트 캡처링</h2>
+    <pre>
+        이벤트 캡처링 : target 에게 이벤트를 전달하기 위해 루트요소 부터 아래로 이벤트를 전파하는 것.
+                    이벤트 캡처링에서는 이벤트핸들러가 동작하지 않는다.
+                    addEventListener의 세번째 매개변수에 true를 전달해, 이벤트캡처링 시에도 이벤트핸들러가 동작되게끔 할 수 있다.
+    </pre>
+    <div class="div1 capture">
+        <div class="div2 capture">
+            <div class="div3 capture">
+                <div class="div4 capture"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.capture').forEach((e, i) => {
+            e.addEventListener('click', ev => {
+                setTimeout(() => {
+                    alert(e.className);
+                    console.dir(ev.target);
+                    e.style.backgroundColor = colorArr[i];
+                }, 500);
+            }, true)
+        })
+    </script>
+
+    <h2>이벤트 전파 막기</h2>
+    <p>특정 요소의 이벤트핸들러 동작 이후 이벤트 전파를 막는다.</p>
+    <div class="div1 stop">
+        <div class="div2 stop">
+            <div class="div3 stop">
+                <div class="div4 stop"></div>
+            </div>
+        </div>
+    </div>  
+    <script>
+        document.querySelectorAll('.stop').forEach((e, i) => {
+            e.addEventListener('click', ev => {
+                setTimeout(() => {
+                    alert(e.className);
+                    console.dir(ev.target);
+                    e.style.backgroundColor = colorArr[i];
+                }, 500);
+
+                console.dir(ev);
+                ev.stopPropagation();
+            })
+        })
+    </script>
+
+
+
+
+
+
+
+
+</body>
+</html>

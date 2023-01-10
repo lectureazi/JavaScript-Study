@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:300px;
+        }
+
+        .wrap>div{
+            display:flex;
+            justify-content:space-between;
+            height:10vw;
+            width:80vw;
+            text-align:center;
+            font-size:1vw;
+        }
+        
+        .wrap>div>div{
+            width:20%;
+            height:90%;
+            border:1px solid black;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+        
+        .wrap>div:first-child{
+            height:20%;
+        }
+        
+        img{
+            width:30%;
+            height:90%;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = this.document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(cssSelector.startsWith('#')) return htmlElements[0];
+            return htmlElements;
+       }
+    </script>
+</head>
+<body>
+<h1>fetch</h1>
+<pre>비동기 통신을 지원하는 자바스크립트의 함수</pre>
+<input type='text' id='keyword'>
+<button id='btnSearch'>검색</button>
+<button id='btnPrev'>이전</button>
+<button id='btnNext'>다음</button>
+<hr>
+<div class='wrap' id="contents">
+	<div class='wrap_book'>
+		<div class='title'>제목</div>
+		<div class='price'>가격</div>
+		<div class='publisher'>출판사</div>
+		<div class='thum'>이미지</div>
+	</div>
+</div>
+
+<script>
+    const KAKAO_API_KEY = 'KakaoAK fece723708634228bc6d90c3319a90ce';
+    let page;
+    let isEnd = false;
+
+    btnSearch.addEventListener('click', async ev => {
+        page = 1;
+        let data = await kakaoBookAPI(keyword.value, page);
+        renderBooks(data);
+    })
+
+    btnPrev.addEventListener('click', async ev => {
+        if(page <= 1){
+            alert('1페이지 입니다.');
+            return;
+        }
+        
+        page--;
+        let data = await kakaoBookAPI(keyword.value, page);
+        renderBooks(data);
+    })
+
+    btnNext.addEventListener('click', async ev => {
+        if(isEnd){
+            alert('마지막 페이지 입니다.');
+            return;
+        }
+
+        page++;
+        let data = await kakaoBookAPI(keyword.value, page);
+        renderBooks(data);
+    })
+
+    async function getData(url, queryString){
+        const response = await fetch(url,{
+            headers:{'Authorization':KAKAO_API_KEY}
+        })
+
+        return response.json();
+    }   
+
+    let kakaoBookAPI = async (keyword, page)=>{
+        let url = `https://dapi.kakao.com/v3/search/book?query=${keyword}&page=${page}`;
+        let data = await getData(url);
+        return data;
+    }
+
+    let renderBooks = (data) => {
+        isEnd = data.meta.is_end;
+
+        let bookData = data.documents.map(e => {
+            return {title:e.title,
+                    price:e.price,
+                    publisher:e.publisher,
+                    thumbnail:e.thumbnail
+            };
+        });
+
+        let columnName = $('.wrap_book')[0].outerHTML;
+        contents.innerHTML = '';
+        contents.innerHTML += columnName;
+
+        bookData.forEach(e => {
+            $('.wrap')[0].innerHTML += columnName;
+            lastWrapBook = $('.wrap')[0].lastElementChild;
+            lastWrapBook.children[0].innerHTML = e.title;
+            lastWrapBook.children[1].innerHTML = e.price;
+            lastWrapBook.children[2].innerHTML = e.publisher;
+            lastWrapBook.children[3].innerHTML = '';
+            lastWrapBook.children[3].style.backgroundImage = `url(${e.thumbnail})`
+        });
+    }
+
+    (async ()=>{
+        //1. 사용자로부터 도서이름을 입력받아 해당 도서키워드로 카카오 도서 API에서 데이터를 받아와 화면에 출력할 수 있도록 코드를 수정
+
+        //2. 다음 버튼을 누를 경우, kakao의 다음 페이지 정보를 받아와서 화면에 뿌려주고, 이전 버튼을 누를 경우 이전 페이지 정보를 받아와서 화면에 뿌려주시오.
+        //   다음 페이지가 없을 경우 '더 출력할 데이터가 없습니다' 라고 alert 창을 출력하세요.
+        //   이전 페이지가 없을 경우 '이전 데이터가 없습니다.'
+
+    })();
+
+
+
+
+
+
+
+</script>
+
+
+
+
+    
+</body>
+</html>

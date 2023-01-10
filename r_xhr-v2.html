@@ -37,9 +37,55 @@
     <button id="btn">검색</button>
 
     <script>
-        btn.addEventListener('click', e => {
+        let map;
+        let markers = [];
 
+        btn.addEventListener('click', async e => {
+
+            let keyword = inpSearch.value;
+            if(!keyword){
+                alert('키워드를 입력하세요.');
+                return;
+            }
+
+            let userXY = await getUserXY();
+            let keywordXY = await getKeywordXY(userXY.lat, userXY.log, keyword);
+            console.dir(keywordXY);
+            console.dir(markers);
+            let xys = keywordXY.documents.map(e => {return {log:e.x, lat:e.y, name:e.place_name}});
+            
+            renderMarker(xys);
+           
         });
+
+        let renderMarker = (xys) => {
+            markers.forEach(e => {
+                e.setMap(null);
+            })
+
+            markers = [];
+
+            xys.forEach(e => {
+                var iwContent = `<div style="padding:5px;">${e.name} </div> `;
+                iwPosition = new kakao.maps.LatLng(e.lat, e.log); //인포윈도우 표시 위치입니다
+
+                // 인포윈도우를 생성합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                    position : iwPosition, 
+                    content : iwContent 
+                });
+
+                let marker = new kakao.maps.Marker({
+                    map: map,
+                    position: new kakao.maps.LatLng(e.lat, e.log),
+                    title:e.name,
+                    clickable:true
+                });
+
+                infowindow.open(map, marker);
+                markers.push(marker);
+            });
+        }
 
         let renderMap = (lat, log) => {
             return new Promise((resolve, reject)=>{
@@ -49,7 +95,7 @@
                     level: 3 //지도의 레벨(확대, 축소 정도)
                 };
 
-                var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+                map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
                 var marker = new kakao.maps.Marker({
                             map: map,
                             position: new kakao.maps.LatLng(lat, log)
@@ -86,14 +132,14 @@
         }
 
         
-        let getKeywordXY = (lat, log) => {
+        let getKeywordXY = (lat, log, keyword) => {
             return new Promise((resolve, reject)=>{
                 // 비동기 통신을 위한 XHR 객체 생성
                 let xhr = new XMLHttpRequest();
                 
                 // 시작줄 작성  : http method, url, protocol
                 //https://dapi.kakao.com/v2/local/search/keyword?query=편의점 &x=127.0735263&y=37.5481267
-                let url = `https://dapi.kakao.com/v2/local/search/keyword?query=편의점&x=${log}&y=${lat}`;
+                let url = `https://dapi.kakao.com/v2/local/search/keyword?query=${keyword}&x=${log}&y=${lat}`;
                 console.dir(url);
                 xhr.open('get', url);
 
@@ -115,26 +161,10 @@
             let keywordXY;
             let map; 
 
-            // 비동기 병렬 실행
             // 두 개의 promise 객체를 먼저 생성해 비동기 작업을 시작
-            let p1 = renderMap(userXY.lat, userXY.log);
-            let p2 = getKeywordXY(userXY.lat, userXY.log);
+            map = renderMap(userXY.lat, userXY.log);
 
-            //p1의 resolve()와 p2의 resolve()가 호출 되기를 대기
-            map = await p1;
-            keywordXY = await p2;
-
-            console.dir(keywordXY);
-            console.dir(map);
-
-            let xys = keywordXY.documents.map(e => {return {log:e.x, lat:e.y}});
             
-            xys.forEach(e => {
-                    new kakao.maps.Marker({
-                    map: map,
-                    position: new kakao.maps.LatLng(e.lat, e.log)
-                });
-            });
         })();
     </script>
 
