@@ -34,9 +34,13 @@
     
     <div id="map" style="width:500px;height:400px; background-color: lightblue;"></div>
     <input type="text" placeholder="검색할 키워드를 입력하세요." id="inpSearch">
-    <button id="btn">현재위치확인</button>
+    <button id="btn">검색</button>
 
     <script>
+        btn.addEventListener('click', e => {
+
+        });
+
         let renderMap = (lat, log) => {
             return new Promise((resolve, reject)=>{
                 var container = document.querySelector('#map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -51,6 +55,10 @@
                             position: new kakao.maps.LatLng(lat, log)
                 });
 
+                // 지도에 교통정보를 표시하도록 지도타입을 추가합니다
+                map.addOverlayMapTypeId(kakao.maps.MapTypeId.ROADVIEW);    
+                var control = new kakao.maps.ZoomControl();
+                map.addControl(control, kakao.maps.ControlPosition.BOTTOMRIGHT); 
                 resolve(map);
             })
         }
@@ -84,10 +92,8 @@
                 let xhr = new XMLHttpRequest();
                 
                 // 시작줄 작성  : http method, url, protocol
-                let query = '편의점';
-
                 //https://dapi.kakao.com/v2/local/search/keyword?query=편의점 &x=127.0735263&y=37.5481267
-                let url = `https://dapi.kakao.com/v2/local/search/keyword?query=${query}&x=${log}&y=${lat}`;
+                let url = `https://dapi.kakao.com/v2/local/search/keyword?query=편의점&x=${log}&y=${lat}`;
                 console.dir(url);
                 xhr.open('get', url);
 
@@ -110,8 +116,8 @@
             let map; 
 
             // 두 개의 promise 객체를 먼저 생성해 비동기 작업을 시작
-            p1 = renderMap(userXY.lat, userXY.log);
-            p2 = getKeywordXY(userXY.lat, userXY.log);
+            let p1 = renderMap(userXY.lat, userXY.log);
+            let p2 = getKeywordXY(userXY.lat, userXY.log);
 
             //p1의 resolve()와 p2의 resolve()가 호출 되기를 대기
             map = await p1;
@@ -121,6 +127,7 @@
             console.dir(map);
 
             let xys = keywordXY.documents.map(e => {return {log:e.x, lat:e.y}});
+            
             xys.forEach(e => {
                     new kakao.maps.Marker({
                     map: map,
