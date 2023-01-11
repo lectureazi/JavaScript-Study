@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        p{
+            border:1px solid red;
+        }
+        
+        span{
+            color:red;
+            font-size:2vw;
+        }
+        
+        #wrapDiv{
+            display:flex;
+            justify-content: space-around;
+            margin-top:5%;
+        }
+        
+        #wrapDiv>div{
+            width:300px;
+            height:300px;
+            border:1px solid blue;
+        }
+    
+    </style>
+    
+    <!-- 외부 js파일 추가 -->
+    <!-- 
+        script 태그 속성
+        defer : 페이지가 모두 로드된 이후에 외부스크립트를 실행시키는 속성
+        async : 외부 스크립트에서 필요로 하는 html요소가 모두 로드되면 즉시 외부스크립트를 실행하는 속성
+     -->
+    <script defer src="./resources/js/common.js" type="text/javascript"></script>
+    
+</head>
+<body>
+    <h1>요소 추가하기</h1>
+    <button id="btnAddAppend"> append()</button>
+    <button id="btnAddPrepend"> prepend()</button>
+
+    <fieldset id="addElement">
+        <lengend>부모태그</lengend>
+        <div id="addDiv">
+            =====================div 태그=====================
+        </div>
+    </fieldset>
+    <script>
+        let cnt = 0;
+
+        let childStyle = {
+            height:'50px',
+            width:'250px',
+            border:'1px solid red',
+            marginTop:'1%'
+        }
+
+        btnAddAppend.addEventListener('click', ev => {
+            let childDiv = createElement('div',{style:childStyle, text:`div-append-${cnt++}`});
+            $('#addDiv').append(childDiv);
+        })
+
+        btnAddPrepend.addEventListener('click', ev => {
+            let childDiv = createElement('div',{style:childStyle, text:`div-prepend-${cnt++}`});
+            $('#addDiv').prepend(childDiv);
+        })
+
+    </script>
+
+    <h1>요소 이동시키기</h1>
+    <button id='btnMove1'>요소 이동시키기 : test01로 이동</button>
+    <button id='btnMove2'>요소 이동시키기 : test02로 이동</button>
+    <button id='btnMove3'>요소 이동시키기 : test03로 이동</button>
+
+    <div id='wrapDiv'>
+        <div id='test01'></div>
+        <div id='test02'></div>
+        <div id='test03'></div>
+    </div>
+    <script>
+        btnMove1.addEventListener('click', ev=>{
+            test01.append(addDiv.lastElementChild);
+        })
+
+        btnMove2.addEventListener('click', ev=>{
+            test02.append(addDiv.lastElementChild);
+        })
+
+        btnMove3.addEventListener('click', ev=>{
+            test03.append(addDiv.lastElementChild);
+        })
+
+    </script>
+</body>
+</html>

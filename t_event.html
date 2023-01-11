@@ -104,9 +104,32 @@
         })
     </script>
 
+    <h1>html요소의 기본 이벤트 방지</h1>
+    <div style="height:100px; border:1px solid black" id="preventNote">
 
+    </div>
+    <form>
+        <button id="btnFrm">div에 텍스트 넣기</button>
+    </form>
+    <script>
+        btnFrm.addEventListener('click', ev=>{
+            document.querySelector('#preventNote').innerHTML = '버튼 이벤트 결과로 출력되는 메시지 입니다.';
+            ev.preventDefault();
+        })
+    </script>
 
+    <h1>이벤트 제거</h1>
+    <button id="btnAlert">알림창띄우기</button>
+    <button id="btnRemove">알림창띄우기 이벤트 제거</button>
+    <script>
+        let alertFnc = ev=>{alert('알림창');};
+        btnAlert.addEventListener('click', alertFnc);
 
+        btnRemove.addEventListener('click', ev => {
+            btnAlert.removeEventListener('click', alertFnc);
+        })
+
+    </script>
 
 
 

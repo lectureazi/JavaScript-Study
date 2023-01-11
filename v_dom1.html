@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .note{
+            border: 1px solid;
+            min-height:200px;
+        }
+    </style>
+    <script>
+        let $ = function(cssSelector, message){
+            let htmlElements = this.document.querySelectorAll(cssSelector);
+
+            if(message){
+                htmlElements.forEach(e => {e.innerHTML += message + '<br>'});
+            }
+
+            if(cssSelector.startsWith('#')) return htmlElements[0];
+            return htmlElements;
+       }
+
+       // props : prop, style, text 라는 속성을 가지는 객체 
+       //         prop : 요소객체의 속성의 name, value를 담은 객체
+       //         style : 요소객체의 style 속성에 들어갈 name, value를 담은 객체
+       //         text : 요소객체의 textNode에 들어갈 문자열
+       let createElement = (tag, props) => {
+
+            let res = document.createElement(tag);
+
+            for(key in props.prop){
+                res[key] = props.prop[key];
+            }
+
+            for(key in props.style){
+                res.style[key] = props.style[key];
+            }
+
+            if(props.text){
+                let textNode = document.createTextNode(props.text);
+                res.appendChild(textNode);
+            }
+
+            return res;
+       }
+
+       
+    </script>
+</head>
+<body>
+    <h1>DOM</h1>
+    <h2>텍스트노드가 있는 node를 생성</h2>
+    <div id="nodeNote" class="note"></div>
+    <script>
+        $('#nodeNote').addEventListener('click', ev => {
+            //createElement(tagName) : 해당 태그 요소를 생성
+            // let title = document.createElement('h3');
+            // let subTitle = document.createElement('h4');
+            
+            // //textNode 생성
+            // let titText = document.createTextNode('안녕? 나는 뽀로리야!');
+            // let subText = document.createTextNode('노는게 제일 좋아');
+            
+            // title.appendChild(titText);
+            // subTitle.appendChild(subText);
+
+            let title = createElement('h3',{text:'안녕? 나는 뽀로리야!'});
+            let subTitle = createElement('h4',{text:'노는게 제일 좋아'});
+
+            console.dir(title);
+            console.dir(subTitle);
+
+            nodeNote.appendChild(title);
+            nodeNote.appendChild(subTitle);
+        })
+    </script>
+
+    <h2>텍스트노드가 없는 노드 생성</h2>
+    <div id="nodeNote2" class="note"></div>
+    <script>
+        $('#nodeNote2').addEventListener('click', ev =>{
+            // let img = document.createElement('img');
+            // console.dir(img);
+            // img.src='./resources/image/IU.jpg';
+            // img.style.width='150px';
+            // img.style.height='75px';
+
+            let img = createElement('img', {prop:{src:'./resources/image/IU.jpg'}, style:{width:'150px', height:'75px'}})
+            nodeNote2.appendChild(img);
+        })
+
+    </script>
+
+
+    <h2>노드 삭제</h2>
+    <div id="nodeNote3" class="note nodeNote3"></div>
+    <button id="btnAdd">노드 추가</button>
+    <button id="btnDel">노드 삭제</button>
+
+    <script>
+        $('#btnAdd').addEventListener('click', ev => {
+            let img = createElement('img', {prop:{src:'./resources/image/IU.jpg'}, style:{width:'150px', height:'75px'}})
+            nodeNote3.appendChild(img);
+        });
+
+        $('#btnDel').addEventListener('click', ev => {
+            $('#nodeNote3>img:last-child').remove();
+        });
+
+
+
+    </script>
+
+
+
+</body>
+</html>

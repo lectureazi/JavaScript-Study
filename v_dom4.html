@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        img,#imgView{
+            width:300px;
+            height:300px;
+        }
+        
+        div{
+            background-color:black;
+        }
+    </style>
+    <script src="./resources/js/common.js"></script>
+</head>
+<body>
+
+    <label><input type="radio" name="radio-cat" >1번후보</label><br>
+    <label><input type="radio" name="radio-cat" >2번후보</label><br>
+    <label><input type="radio" name="radio-cat" >3번후보</label><br>
+
+    <button class="btn_create-img" >이미지 생성하기</button>
+    <button class="btn_del-img">이미지 삭제하기</button>
+
+    <div id="imgView">
+
+    </div>
+
+    <script>
+        //1. 원하는 후보를 라디오버튼으로 선택한 뒤, 이미지 생성하기를 클릭하면 imgView 안에 새로운 이미지 태그를 만든다.
+
+        //2. 만든 이미지 태그의 src 속성에 후보에 맞는 이미지 경로를 넣어준다.
+        //      1번후보 : image01.jpg
+        //      2번후보 : image02.jpg
+        //      3번후보 : image03.jpg
+
+        //2-1. 이미 이미지 태그가 존재한다면 존재하는 이미지 태그의 src 속성을 변경한다.
+
+        //3. 이미지 삭제하기 버튼을 클릭하면 이미지 태그를 삭제한다.
+
+    </script>
+
+
+    
+</body>
+</html>

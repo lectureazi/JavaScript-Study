@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./resources/js/common.js"></script>
+    <style>
+        .contents{  
+            height: 30vh;
+            background-color: lightcoral;
+            border: 1px solid lightgray;
+        }
+
+        .iu{
+            background-image: url(resources/image/IU.jpg);
+            background-size: contain;
+        }
+
+        .jo{
+            background-image: url(resources/image/jo.jpg);
+            background-size: contain;
+        }
+
+        .emma{
+            background-image: url(resources/image/엠마.jpg);
+            background-size: contain;
+        }
+
+        .onebin{
+            background-image: url(resources/image/원빈.jpg);
+            background-size: contain;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap" id="wrap">
+        <div class="contents iu"></div>
+        <div class="contents jo"></div>
+        <div class="contents iu"></div>
+        <div class="contents jo"></div>
+        
+    </div>
+
+    <script>
+        let bg = ['iu','jo','emma','onebin'];
+        let idx = 0;
+
+        document.addEventListener('scroll', ev => {
+            // 스크롤된 길이 > 전체 컨텐츠 길이 - 사용자 화면의 
+            if(scrollY > wrap.clientHeight - screen.availHeight){
+                wrap.append(createElement('div',{prop:{className:`contents ${bg[idx++]}`}}));
+                if(idx > 3) idx = 0;
+            }
+        })
+    </script>
+
+</body>
+</html>

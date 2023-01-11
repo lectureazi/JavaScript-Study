@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+		line-height:2;
+        }
+
+        .wrap_color{
+            display: flex;
+            flex-wrap:wrap;
+            justify-content: space-between;
+            width:320px;
+            height:320px;
+        }
+        
+        .wrap_color>div{
+            width:150px;
+            height:150px;
+            margin-top:20px;
+            border:thin solid;
+        }
+        
+        .base{
+            display: flex;
+            flex-direction: column;
+            margin:4% 0 2% 0;
+        }
+    </style>
+    <script src="./resources/js/common.js"></script>
+</head>
+<body>
+    <h1>data-* 속성</h1>
+    <pre>
+        html 요소의 data-* 속성
+        html요소에 data- 를 prefix로 붙이고 뒤에 원하는 이름을 지정한 다음, 해당 속성에 원하는 값을 저장
+        ex) data-box-id="red"
+
+        html의 data-* 속성에 저장한 값은
+        자바스크립트에서 요소객체의 dataset 속성으로 접근해 사용할 수 있다.
+
+        ex) data-box-id="#red"    => redCheck.dataset.boxId
+        ex) data-box-color="red" => redCheck.dataset.boxColor
+
+    </pre>
+    <div class="wrap_color">
+        <div id="red"  class="box">빨강</div>
+        <div id="pink" class="box">분홍</div>
+        <div id="blue" class="box">파랑</div>
+        <div id="green" class="box">초록</div>
+    </div>
+
+    <div class="base">
+        <label><input type="checkbox" class='all' id="allCheck" >전체선택</label>
+        <label><input type="checkbox" class='color' id="redCheck"   data-box-id="#red"    data-box-color="red">빨강</label>
+        <label><input type="checkbox" class='color' id="pinkCheck"  data-box-id="#pink"   data-box-color="pink">분홍</label>
+        <label><input type="checkbox" class='color' id="blueCheck"  data-box-id="#blue"   data-box-color="blue">파랑</label>
+        <label><input type="checkbox" class='color' id="greenCheck" data-box-id="#green"  data-box-color="green">초록</label>
+    </div>
+
+    <button class='btn_select' id="btnSelect">선택</button>
+    <button class='btn_clear' id="btnClear">clear</button>
+    
+    <script>
+        // 색상명이 일치하는 체크박스를 체크하고, 선택버튼을 클릭할 경우 해당 색상의 div에 스타일을
+        // background-color는 색상명으로 변경하고 color 는 하얀색으로 변경한다
+
+        // 전체선택을 체크하면, 모든 체크박스를 체크상태로 변경한다.
+
+        // clear버튼을 누르면 페이지를 초기화한다. 모든 div요소의 스타일 원복 + 모든 체크박스 체크 해제
+        let changeBoxStyle= () => {
+            // 체크상태인 체크박스가 뭔지 확인
+            $('.wrap_color>div').forEach(e => {
+                e.style.backgroundColor = 'white';
+                e.style.color = 'black';
+            })
+
+            $('.color').forEach(e => {
+                if(e.checked){
+                    $(e.dataset.boxId).style.backgroundColor = e.dataset.boxColor;
+                    $(e.dataset.boxId).style.color = 'white';
+                }
+            })
+        }
+
+        btnSelect.addEventListener('click', changeBoxStyle);
+        btnClear.addEventListener('click', ev => {
+            $('.base input[type=checkbox]').forEach(e => {
+                e.checked = false;
+            });
+
+            changeBoxStyle();
+        });
+
+        $('#allCheck').addEventListener('click', ev => {
+            $('.color').forEach(e => {
+                e.checked = allCheck.checked;
+            })
+        })
+    
+
+
+
+    </script>
+    
+</body>
+</html>
